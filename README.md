@@ -7,12 +7,13 @@
 
 ---
 ## Scripts Overview
-1. health_check.sh
+#### 1. health_check.sh
 Purpose: Monitors server resources (CPU, memory, disk) and checks API endpoint availability.
 Logs: /var/log/server_health.log
 Cron Schedule: Every 6 hours (0 */6 * * *)
 
-2. backup_api.sh
+#### 2. backup_api.sh
+----
 a. **Full Backup**  
    - **Execution**: `tar -czvf backup.tar.gz /path/to/data`  
    - **Pros**: Easy restoration.  
@@ -26,7 +27,7 @@ c. **Differential Backup**
    - **Pros**: Faster restoration than incremental.  
    - **Cons**: More storage than incremental.
 
-3. update_server.sh
+#### 3. update_server.sh
 Purpose: Automate server/API updates.
 
 ## installation
