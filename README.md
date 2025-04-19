@@ -13,7 +13,6 @@ Logs: /var/log/server_health.log
 Cron Schedule: Every 6 hours (0 */6 * * *)
 
 #### 2. backup_api.sh
-----
 a. **Full Backup**  
    - **Execution**: `tar -czvf backup.tar.gz /path/to/data`  
    - **Pros**: Easy restoration.  
