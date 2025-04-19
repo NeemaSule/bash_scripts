@@ -25,11 +25,11 @@ sudo bash_scripts/backup_api.sh
 
 # Update server (if needed)
 sudo bash_scripts/update_server.sh
-
+```
 ---
 
-# Schedule Automated Execution(contrib)
-### bash csrpt
+### Schedule Automated Execution(contrib)
+```bash
 #!/bin/bash
 # Universal Cron Setup Script
 
@@ -58,5 +58,5 @@ done
 
 echo -e "\nCurrent cron jobs:"
 crontab -l
-
+```
 ---
