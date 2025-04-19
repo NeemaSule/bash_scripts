@@ -10,23 +10,29 @@
    ```bash
    git clone https://github.com/your-username/cs421-assignment2.git
    cd cs421-assignment2
-Make scripts executable:
 
-bash
+   ---
+## Make scripts executable:
+
+```bash
 chmod +x bash_scripts/*.sh
 Schedule automated runs:
 
-bash
+```bash
 (crontab -l ; echo "0 */6 * * * $(pwd)/bash_scripts/health_check.sh") | crontab -
-📂 Scripts
-🔍 Health Check (health_check.sh)
+
+---
+## 📂 Scripts
+
+***🔍 Health Check (health_check.sh)
 What it does: Checks server health and API status
 
 Runs every: 6 hours
 
 Logs to: /var/log/server_health.log
+---
 
-💾 Backup Script (backup_api.sh)
+***💾 Backup Script (backup_api.sh)
 What it does: Backs up API files and database
 
 Runs every: Day at 2 AM
