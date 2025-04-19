@@ -1,117 +1,107 @@
-###CS 421 - Assignment 2: Automated Server Management
-###Server IP: http://54.152.132.206
-###Instructor: Dr. Goodiel C. Moshi
+# CS 421 - Assignment 2: Server Automation Scripts
+
+**Server IP:** [54.152.132.206](http://54.152.132.206)  
+**Instructor:** Dr. Goodiel C. Moshi  
+**Submission Email:** [goodiel.moshi@udom.ac.tz](mailto:goodiel.moshi@udom.ac.tz)  
+**Due:** 19th April 2025 (1800 hrs)
+
+---
+
+## 📌 Table of Contents
+1. [Repository Structure](#-repository-structure)
+2. [Scripts Overview](#-scripts-overview)
+3. [Setup Instructions](#%EF%B8%8F-setup-instructions)
+4. [Backup Schemes](#-backup-schemes)
+5. [Verification](#-verification)
+6. [Submission](#-submission)
+7. [Notes](#%EF%B8%8F-notes)
+
+---
+
+## 📁 Repository Structure
+.
+├── bash_scripts/
+│ ├── health_check.sh # Server health monitoring
+│ ├── backup_api.sh # Automated backups
+│ └── update_server.sh # System updates
+├── logs_sample.txt # Log excerpts
+├── cron_setup.png # Cron job proof
+└── README.md # This documentation
 
 
-Repository Structure
-bash_scripts/
-├── health_check.sh       # Monitors server health and API status
-├── backup_api.sh         # Backs up API files and database
-├── update_server.sh      # Automates server/API updates
-README.md                 # Project documentation (this file)
+---
 
-Scripts Overview
-1. health_check.sh
-Purpose: Monitors server resources (CPU, memory, disk) and checks API endpoint availability.
-Logs: /var/log/server_health.log
-Cron Schedule: Every 6 hours (0 */6 * * *)
+## 🛠️ Scripts Overview
 
-Usage
-bash
-chmod +x health_check.sh
-sudo ./health_check.sh
-Checks Performed
-CPU/Memory/Disk usage.
+### 1. `health_check.sh`
+**Purpose**: Monitor CPU/memory/disk and API endpoints.  
+**Logs**: `/var/log/server_health.log`  
+**Cron**: `0 */6 * * *` (Every 6 hours)
 
-Web server (Nginx/Apache) status.
+```bash
+#!/bin/bash
+log_file="/var/log/server_health.log"
+echo "$(date) - Starting checks..." >> $log_file
 
-API endpoints (/students, /subjects) HTTP 200 OK.
+# Resource checks
+cpu=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
+echo "$(date) - CPU: $cpu%" >> $log_file
 
+# API test
+curl -s http://54.152.132.206/students | grep -q "200" || echo "$(date) - API DOWN" >> $log_file
 2. backup_api.sh
-Purpose: Backs up API files and database, then purges backups older than 7 days.
-Backup Location: /home/ubuntu/backups/
+Purpose: Backup API files + DB with 7-day retention.
 Logs: /var/log/backup.log
-Cron Schedule: Daily at 2 AM (0 2 * * *)
+Cron: 0 2 * * * (Daily at 2 AM)
 
-Usage
 bash
-chmod +x backup_api.sh
-sudo ./backup_api.sh
-Features
-Compresses API directory to api_backup_YYYY-MM-DD.tar.gz.
+#!/bin/bash
+backup_dir="/home/ubuntu/backups"
+mkdir -p $backup_dir
 
-Exports database to db_backup_YYYY-MM-DD.sql (if applicable).
+# Compress API files
+tar -czvf "$backup_dir/api_$(date +%F).tar.gz" /var/www/api >> /var/log/backup.log 2>&1
 
-Auto-cleans old backups.
-
+# Cleanup old backups
+find $backup_dir -type f -mtime +7 -delete
 3. update_server.sh
-Purpose: Updates server packages and deploys latest API code from GitHub.
+Purpose: Update packages + deploy API changes.
 Logs: /var/log/update.log
-Cron Schedule: Every 3 days at 3 AM (0 3 */3 * *)
+Cron: 0 3 */3 * * (Every 3 days at 3 AM)
 
-Usage
 bash
-chmod +x update_server.sh
-sudo ./update_server.sh
-Steps
-Runs apt update && apt upgrade -y.
-
-Pulls latest code from Git.
-
-Restarts web server (Nginx/Apache).
-
-Setup Instructions
-1. Prerequisites
-AWS Ubuntu Server (Free Tier t2.micro/t3.micro).
-
-Installed dependencies:
-
+#!/bin/bash
+{
+  apt update && apt upgrade -y
+  cd /var/www/api && git pull
+  systemctl restart nginx
+} >> /var/log/update.log 2>&1
+⚙️ Setup Instructions
+Prerequisites
 bash
 sudo apt update && sudo apt install -y curl git mysql-client
-2. Deploy Scripts
-Clone your repository to the server:
+Deployment
+Clone repo:
 
 bash
-git clone https://github.com/your-username/your-repo.git
-Navigate to the scripts directory:
-
-bash
-cd your-repo/bash_scripts
+git clone https://github.com/your-username/cs421-assignment2.git
 Make scripts executable:
 
 bash
-chmod +x *.sh
-3. Schedule with Cron
-Edit crontab:
+chmod +x bash_scripts/*.sh
+Schedule cron jobs:
 
 bash
-crontab -e
-Add these lines:
-
+(crontab -l ; echo "0 */6 * * * $(pwd)/health_check.sh") | crontab -
+🔄 Backup Schemes
+Type	Command	Pros	Cons
+Full	tar -czvf backup.tar.gz /data	Easy restoration	High storage
+Incremental	rsync -a --link-dest=last/ src/ dst/	Saves space	Complex restoration
+Differential	tar -czvf diff.tar.gz -N $(date -d "7 days ago") /data	Balanced	Medium storage
+🔍 Verification
 bash
-0 */6 * * * /path/to/health_check.sh
-0 2 * * * /path/to/backup_api.sh
-0 3 */3 * * /path/to/update_server.sh
-Backup Schemes (Task 0)
-Three common backup methods are documented in this repository’s README.md, including:
+# Check logs
+tail -f /var/log/server_health.log
 
-Full Backup
-
-Incremental Backup
-
-Differential Backup
-
-Refer to the file for advantages/disadvantages and execution steps.
-
-Verification
-Check Logs:
-
-bash
-cat /var/log/server_health.log       # Health checks
-cat /var/log/backup.log              # Backup history
-cat /var/log/update.log              # Update logs
-Test API Endpoints:
-
-bash
-curl http://54.152.132.206/students
-curl http://54.152.132.206/subjects
+# Test API
+curl -I http://54.152.132.206/students
