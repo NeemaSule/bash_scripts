@@ -6,7 +6,7 @@ mkdir -p $backup_dir
 echo "$(date) - Starting backup..." >> $log_file
 
 # Backup API files
-tar -czvf "$backup_dir/api_backup_$(date +%F).tar.gz" /var/www/student_api && \
+tar -czvf "$backup_dir/api_backup_$(date +%F).tar.gz" /var/www/student-api && \
     echo "$(date) - API backup successful" >> $log_file || \
     echo "$(date) - ERROR: API backup failed" >> $log_file
 
