@@ -1,6 +1,6 @@
 #!/bin/bash
 log_file="/var/log/update.log"
-api_dir="/var/www/student_api"
+api_dir="/home/ubuntu/student-api"
 
 echo "$(date) - Starting update..." >> $log_file
 
