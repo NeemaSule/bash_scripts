@@ -1,6 +1,6 @@
-CS 421 - Assignment 2: Automated Server Management
-Server IP: http://54.152.132.206
-Instructor: Dr. Goodiel C. Moshi
+###CS 421 - Assignment 2: Automated Server Management
+###Server IP: http://54.152.132.206
+###Instructor: Dr. Goodiel C. Moshi
 
 
 Repository Structure
