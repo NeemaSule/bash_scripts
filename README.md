@@ -95,7 +95,7 @@ chmod +x setup_cron.sh
 
 #check contrib status with
 crontab -l
-
+```
 ---
 ![contrib in action](https://github.com/user-attachments/assets/085a06dd-e0fc-4b87-b488-e0c2c2631eff)
 
