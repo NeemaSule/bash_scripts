@@ -6,6 +6,28 @@
 **Due Date:** 19th April 2025 (1800 hrs)
 
 ---
+## Scripts Overview
+1. health_check.sh
+Purpose: Monitors server resources (CPU, memory, disk) and checks API endpoint availability.
+Logs: /var/log/server_health.log
+Cron Schedule: Every 6 hours (0 */6 * * *)
+
+2. backup_api.sh
+a. **Full Backup**  
+   - **Execution**: `tar -czvf backup.tar.gz /path/to/data`  
+   - **Pros**: Easy restoration.  
+   - **Cons**: High storage usage.  
+b. **Incremental Backup**  
+   - **Execution**: Uses `rsync --link-dest` to backup only changes since the last backup.  
+   - **Pros**: Saves storage.  
+   - **Cons**: Slower restoration (requires full + all incrementals).  
+c. **Differential Backup**  
+   - **Execution**: Backs up changes since the last full backup.  
+   - **Pros**: Faster restoration than incremental.  
+   - **Cons**: More storage than incremental.
+
+3. update_server.sh
+Purpose: Automate server/API updates.
 
 ## installation
 ** (https://github.com/NeemaSule/bash_scripts.git)
@@ -31,7 +53,7 @@ sudo bash_scripts/update_server.sh
 ### Schedule Automated Execution(contrib)
 ```bash
 #!/bin/bash
-# Universal Cron Setup Script
+# Cron Setup Script
 
 # Configuration
 SCRIPTS_DIR="/home/ubuntu/bash_scripts"
@@ -60,3 +82,20 @@ echo -e "\nCurrent cron jobs:"
 crontab -l
 ```
 ---
+
+### Run contrib
+```bash
+#Save the above as setup_cron.sh
+
+#Make executable:
+chmod +x setup_cron.sh
+
+#Run without sudo:
+ ./setup_cron.sh
+
+#check contrib status with
+crontab -l
+
+---
+![contrib in action](https://github.com/user-attachments/assets/085a06dd-e0fc-4b87-b488-e0c2c2631eff)
+
