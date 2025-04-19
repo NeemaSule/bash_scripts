@@ -27,8 +27,9 @@ sudo bash_scripts/backup_api.sh
 sudo bash_scripts/update_server.sh
 
 ---
-### Schedule Automated Execution(contrib)
-```bash
+
+# Schedule Automated Execution(contrib)
+### bash csrpt
 #!/bin/bash
 # Universal Cron Setup Script
 
