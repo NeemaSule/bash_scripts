@@ -107,7 +107,8 @@ crontab -l
 [update-log.txt](https://github.com/user-attachments/files/19819825/update-log.txt)
 
 #### backup log
-[backup-log.txt](https://github.com/user-attachments/files/19819859/backup-log.txt)
+[backup-log.txt](https://github.com/user-attachments/files/19863075/backup-log.txt)
+
 
 
 
