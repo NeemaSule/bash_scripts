@@ -2,11 +2,11 @@
 
 # Configuration
 BACKUP_DIR="/home/ubuntu/backups"
-API_DIR="/home/ubuntu/student-api"  # Change this to your API directory name
+API_DIR="/home/ubuntu/student-api"  
 LOG_FILE="/var/log/backup.log"
-DB_USER="student"           # Only if using database
-DB_PASS="Neema@@24"           # Only if using database
-DB_NAME="student_db"               # Only if using database
+DB_USER="root"           
+DB_PASS="Neema@24"           
+DB_NAME="student_db"             
 
 # Create backup directory if not exists
 mkdir -p "$BACKUP_DIR"
